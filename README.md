@@ -1,0 +1,3 @@
+### Action Scheduler High Volume
+
+Increase the [batch size](https://github.com/prospress/action-scheduler#increasing-batch-size) and [concurrency](https://github.com/prospress/action-scheduler#increasing-concurrent-batches) that [Action Scheduler](https://github.com/prospress/action-scheduler) uses to process large queues of actions more quickly. Handy for high volume websites with more server resources.

@@ -1,0 +1,60 @@
+<?php
+/**
+ * Plugin Name: Action Scheduler High Volume
+ * Plugin URI: https://github.com/prospress/action-scheduler
+ * Description: Increase Action Scheduler batch size and concurrency to process large queues of actions more quickly on high volume websites with more server resources.
+ * Author: Prospress Inc.
+ * Author URI: http://prospress.com/
+ * Version: 1.0
+ *
+ * Copyright 2015 Prospress, Inc.  (email : freedoms@prospress.com)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author	Brent Shepherd
+ * @since	1.0
+ */
+
+
+/** 
+ * Action scheduler claims a batch of actions to process in each request. It keeps the batch
+ * fairly small (by default, 25) in order to prevent errors, like script timeouts or memory
+ * exhaustion on low powered severs.
+ *
+ * This method increases it so that more actions are processed in each queue, which speeds up the
+ * overall queue processing time due to latency in requests and the minimum 1 minute between each
+ * queue being processed.
+ *
+ * For more details, see: https://github.com/prospress/action-scheduler#increasing-batch-size
+ */
+function ashp_increase_queue_batch_size( $batch_size ) {
+	return $batch_size * 4;
+}
+add_filter( 'action_scheduler_queue_runner_batch_size', 'ashp_increase_queue_batch_size' );
+
+/** 
+ * Action scheduler processes queues of actions in parallel to speed up the processing of large numbers
+ * If each queue takes a long time, this will result in multiple PHP processes being used to process actions,
+ * which can prevent PHP processes being available to serve requests from visitors. This is why it defaults to
+ * only 5. However, on high volume sites, this can be increased to speed up the processing time for actions.
+ *
+ * This method doubles the default so that more queues can be processed concurrently. Use with caution as doing
+ * this can take down your site completely depending on your PHP configuration.
+ *
+ * For more details, see: https://github.com/prospress/action-scheduler#increasing-concurrent-batches
+ */
+function ashp_increase_concurrent_batches( $concurrent_batches ) {
+	return $concurrent_batches * 2;
+}
+add_filter( 'action_scheduler_queue_runner_concurrent_batches', 'ashp_increase_concurrent_batches' );
