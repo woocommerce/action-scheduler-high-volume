@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Action Scheduler High Volume
  * Plugin URI: https://github.com/prospress/action-scheduler
- * Description: Increase Action Scheduler batch size and concurrency to process large queues of actions more quickly on high volume websites with more server resources.
+ * Description: Increase Action Scheduler batch size, concurrency and timeout period to process large queues of actions more quickly on high volume websites with more server resources.
  * Author: Prospress Inc.
  * Author URI: http://prospress.com/
  * Version: 1.0
@@ -58,3 +58,13 @@ function ashp_increase_concurrent_batches( $concurrent_batches ) {
 	return $concurrent_batches * 2;
 }
 add_filter( 'action_scheduler_queue_runner_concurrent_batches', 'ashp_increase_concurrent_batches' );
+
+/**
+ * Action scheduler reset actions claimed for more than 5 minutes. Because we're increasing the batch size, we
+ * also want to increase the amount of time given to queues before reseting claimed actions.
+ */
+function ashp_increase_timeout( $timeout ) {
+	return $timeout * 3;
+}
+add_filter( 'action_scheduler_timeout_period', 'ashp_increase_timeout' );
+add_filter( 'action_scheduler_failure_period', 'ashp_increase_timeout' );
