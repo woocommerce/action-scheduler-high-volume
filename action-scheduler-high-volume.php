@@ -55,7 +55,7 @@ add_filter( 'action_scheduler_queue_runner_batch_size', 'ashp_increase_queue_bat
  * For more details, see: https://github.com/prospress/action-scheduler#increasing-concurrent-batches
  */
 function ashp_increase_concurrent_batches( $concurrent_batches ) {
-	return $concurrent_batches * 2;
+	return $concurrent_batches * 6;
 }
 add_filter( 'action_scheduler_queue_runner_concurrent_batches', 'ashp_increase_concurrent_batches' );
 
@@ -68,3 +68,47 @@ function ashp_increase_timeout( $timeout ) {
 }
 add_filter( 'action_scheduler_timeout_period', 'ashp_increase_timeout' );
 add_filter( 'action_scheduler_failure_period', 'ashp_increase_timeout' );
+
+/**
+ * Action scheduler initiates one queue runner every time the 'action_scheduler_run_queue' action is triggered.
+ *
+ * Because this action is only triggered at most once every minute, that means it would take 30 minutes to spin
+ * up 30 queues. To handle high volume sites with powerful servers, we want to initiate additional queue runners
+ * whenever the 'action_scheduler_run_queue' is run, so we'll kick off secure requests to our server to do that.
+ */
+function ashp_request_additional_runners() {
+
+	// allow self-signed SSL certificates
+	add_filter( 'https_local_ssl_verify', '__return_false', 100 );
+
+	for ( $i = 1; $i < 4; $i++ ) {
+		$response = wp_remote_post( admin_url( 'admin-ajax.php' ), array(
+			'method'      => 'POST',
+			'timeout'     => 45,
+			'redirection' => 5,
+			'httpversion' => '1.0',
+			'blocking'    => false,
+			'headers'     => array(),
+			'body'        => array(
+				'action'     => 'ashp_create_additional_runners',
+				'instance'   => $i,
+				'ashp_nonce' => wp_create_nonce( 'ashp_additional_runner_' . $i ),
+			),
+			'cookies'     => array(),
+		) );
+	}
+}
+add_action( 'action_scheduler_run_queue', 'ashp_request_additional_runners', 0 );
+
+/**
+ * Handle requests initiated by ashp_request_additional_runners() and start a queue runner if the request is valid.
+ */
+function ashp_create_additional_runners() {
+
+	if ( isset( $_POST['ashp_nonce'] ) && isset( $_POST['instance'] ) && wp_verify_nonce( $_POST['ashp_nonce'], 'ashp_additional_runner_' . $_POST['instance'] ) ) {
+		ActionScheduler_QueueRunner::instance()->run();
+	}
+
+	wp_die();
+}
+add_action( 'wp_ajax_nopriv_ashp_create_additional_runners', 'ashp_create_additional_runners', 0 );
