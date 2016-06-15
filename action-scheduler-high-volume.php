@@ -49,7 +49,7 @@ add_filter( 'action_scheduler_queue_runner_batch_size', 'ashp_increase_queue_bat
  * which can prevent PHP processes being available to serve requests from visitors. This is why it defaults to
  * only 5. However, on high volume sites, this can be increased to speed up the processing time for actions.
  *
- * This method doubles the default so that more queues can be processed concurrently. Use with caution as doing
+ * This method hextuples the default so that more queues can be processed concurrently. Use with caution as doing
  * this can take down your site completely depending on your PHP configuration.
  *
  * For more details, see: https://github.com/prospress/action-scheduler#increasing-concurrent-batches
