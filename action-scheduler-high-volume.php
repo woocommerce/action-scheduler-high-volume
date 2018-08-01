@@ -112,3 +112,11 @@ function ashp_create_additional_runners() {
 	wp_die();
 }
 add_action( 'wp_ajax_nopriv_ashp_create_additional_runners', 'ashp_create_additional_runners', 0 );
+
+/**
+ * Increase the amount of time allowed to process each batch processed via the default WP Cron runner.
+ */
+function ashp_increase_maximum_execution_time() {
+	return 120;
+}
+add_action( 'action_scheduler_maximum_execution_time', 'ashp_increase_maximum_execution_time' );
