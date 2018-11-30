@@ -29,14 +29,13 @@
 
 /** 
  * Action scheduler claims a batch of actions to process in each request. It keeps the batch
- * fairly small (by default, 25) in order to prevent errors, like script timeouts or memory
- * exhaustion on low powered severs.
+ * fairly small (by default, 25) in order to prevent errors, like memory exhaustion.
  *
  * This method increases it so that more actions are processed in each queue, which speeds up the
  * overall queue processing time due to latency in requests and the minimum 1 minute between each
  * queue being processed.
  *
- * For more details, see: https://github.com/prospress/action-scheduler#increasing-batch-size
+ * For more details, see: https://actionscheduler.org/perf/#increasing-batch-size
  */
 function ashp_increase_queue_batch_size( $batch_size ) {
 	return $batch_size * 4;
@@ -52,7 +51,7 @@ add_filter( 'action_scheduler_queue_runner_batch_size', 'ashp_increase_queue_bat
  * This method hextuples the default so that more queues can be processed concurrently. Use with caution as doing
  * this can take down your site completely depending on your PHP configuration.
  *
- * For more details, see: https://github.com/prospress/action-scheduler#increasing-concurrent-batches
+ * For more details, see: https://actionscheduler.org/perf/#increasing-concurrent-batches
  */
 function ashp_increase_concurrent_batches( $concurrent_batches ) {
 	return $concurrent_batches * 6;
