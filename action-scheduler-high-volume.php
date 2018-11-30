@@ -80,7 +80,7 @@ function ashp_request_additional_runners() {
 	// allow self-signed SSL certificates
 	add_filter( 'https_local_ssl_verify', '__return_false', 100 );
 
-	for ( $i = 1; $i < 4; $i++ ) {
+	for ( $i = 0; $i < 5; $i++ ) {
 		$response = wp_remote_post( admin_url( 'admin-ajax.php' ), array(
 			'method'      => 'POST',
 			'timeout'     => 45,
