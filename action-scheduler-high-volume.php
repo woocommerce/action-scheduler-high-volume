@@ -1,13 +1,13 @@
 <?php
 /**
  * Plugin Name: Action Scheduler High Volume
- * Plugin URI: https://github.com/prospress/action-scheduler
- * Description: Increase Action Scheduler batch size, concurrency and timeout period to process large queues of actions more quickly on high volume websites with more server resources.
+ * Plugin URI: https://github.com/prospress/action-scheduler-high-volume
+ * Description: Increase Action Scheduler batch size, concurrency and timeout period to process large queues of actions more quickly on servers with more server resources.
  * Author: Prospress Inc.
  * Author URI: http://prospress.com/
- * Version: 1.0
+ * Version: 1.1.0
  *
- * Copyright 2015 Prospress, Inc.  (email : freedoms@prospress.com)
+ * Copyright 2018 Prospress, Inc.  (email : freedoms@prospress.com)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
