@@ -54,7 +54,7 @@ add_filter( 'action_scheduler_queue_runner_batch_size', 'ashp_increase_queue_bat
  * For more details, see: https://actionscheduler.org/perf/#increasing-concurrent-batches
  */
 function ashp_increase_concurrent_batches( $concurrent_batches ) {
-	return $concurrent_batches * 6;
+	return $concurrent_batches * 2;
 }
 add_filter( 'action_scheduler_queue_runner_concurrent_batches', 'ashp_increase_concurrent_batches' );
 
