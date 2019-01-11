@@ -59,14 +59,14 @@ function ashp_increase_concurrent_batches( $concurrent_batches ) {
 add_filter( 'action_scheduler_queue_runner_concurrent_batches', 'ashp_increase_concurrent_batches' );
 
 /**
- * Action Scheduler provides a default maximum of 30 seconds in which to process actions. Increase this to 120
- * seconds for hosts like Pantheon which support such a long time limit. Note, WP Engine only supports a maximum
- * of 60 seconds - if using WP Engine, this will need to be decreased to 60.
+ * Action scheduler reset actions claimed for more than 5 minutes. Because we're increasing the batch size, we
+ * also want to increase the amount of time given to queues before reseting claimed actions.
  */
-function ashp_increase_time_limit( $time_limit ) {
-	return 120;
+function ashp_increase_timeout( $timeout ) {
+	return $timeout * 3;
 }
-add_filter( 'action_scheduler_queue_runner_time_limit', 'ashp_increase_time_limit' );
+add_filter( 'action_scheduler_timeout_period', 'ashp_increase_timeout' );
+add_filter( 'action_scheduler_failure_period', 'ashp_increase_timeout' );
 
 /**
  * Action scheduler initiates one queue runner every time the 'action_scheduler_run_queue' action is triggered.
