@@ -113,9 +113,13 @@ function ashp_create_additional_runners() {
 add_action( 'wp_ajax_nopriv_ashp_create_additional_runners', 'ashp_create_additional_runners', 0 );
 
 /**
- * Increase the amount of time allowed to process each batch processed via the default WP Cron runner.
+ * Action Scheduler provides a default maximum of 30 seconds in which to process actions. Increase this to 120
+ * seconds for hosts like Pantheon which support such a long time limit, or if you know your PHP and Apache, Nginx
+ * or other web server configs support a longer time limit.
+ *
+ * Note, WP Engine only supports a maximum of 60 seconds - if using WP Engine, this will need to be decreased to 60.
  */
-function ashp_increase_maximum_execution_time() {
+function ashp_increase_time_limit() {
 	return 120;
 }
-add_action( 'action_scheduler_maximum_execution_time', 'ashp_increase_maximum_execution_time' );
+add_action( 'action_scheduler_queue_runner_time_limit', 'ashp_increase_time_limit' );
