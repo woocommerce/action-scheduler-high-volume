@@ -13,8 +13,3 @@ For more details on these changes, refer to the [Action Scheduler Performance Tu
 
 > <sup>*</sup> WP Engine only supports a maximum of 60 seconds per request - if using WP Engine, the time limit set by this plugin in the `ashp_increase_time_limit()` function will need to be decreased from 120 to 60.
 
----
-
-<p align="center">
-<img src="https://cloud.githubusercontent.com/assets/235523/11986380/bb6a0958-a983-11e5-8e9b-b9781d37c64a.png" width="160">
-</p>
