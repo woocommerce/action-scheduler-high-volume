@@ -122,4 +122,4 @@ add_action( 'wp_ajax_nopriv_ashp_create_additional_runners', 'ashp_create_additi
 function ashp_increase_time_limit() {
 	return 120;
 }
-add_action( 'action_scheduler_queue_runner_time_limit', 'ashp_increase_time_limit' );
+add_filter( 'action_scheduler_queue_runner_time_limit', 'ashp_increase_time_limit' );
