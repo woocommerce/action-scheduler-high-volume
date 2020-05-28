@@ -1,3 +1,8 @@
+> **Note:** With the major improvements added to Action Scheduler 3.0, most notably the migration to custom tables for storing actions and loopback requests to chain the processing of actions, the tweaks available in this plugin should be required far less often than with earlier versions of Action Scheduler.
+
+> The code here remains mostly to demonstrate how to tweak some of the configuration that influences throughput.
+
+
 ### Action Scheduler High Volume
 
 Increase the processing thresholds for Action Scheduler to process large queues of actions more quickly. Handy for high volume websites with more server resources.
